@@ -10,8 +10,16 @@ if (!process.env.MONGODB_URI) {
 }
 const client = new MongoClient(process.env.MONGODB_URI, options);
 
-// Attach the client to ensure proper cleanup on function suspension
 attachDatabasePool(client);
 
-// Export a module-scoped MongoClient to ensure the client can be shared across functions.
-export { client };
+let clientPromise: Promise<MongoClient> | null = null;
+
+export async function getClient(): Promise<MongoClient> {
+  if (!clientPromise) {
+    clientPromise = client.connect().then(() => client).catch((err) => {
+      clientPromise = null;
+      throw err;
+    });
+  }
+  return clientPromise;
+}
