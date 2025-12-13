@@ -83,7 +83,7 @@ async function Page() {
       </div>
 
       <div className="flex justify-start items-center gap-2">
-        <h2 className="text-lg font-semibold my-4">Today's Insight</h2>
+        <h2 className="text-lg font-semibold my-4">Today&apos;s Insight</h2>
         <ChevronRight size={20} />
       </div>
 
